@@ -1,11 +1,18 @@
 # QPIC: Query-Based Pairwise Human-Object Interaction Detection with Image-Wide Contextual Information
 by [Masato Tamura](https://scholar.google.co.jp/citations?user=IbPzCocAAAAJ), [Hiroki Ohashi](https://scholar.google.com/citations?user=GKC6bbYAAAAJ), and Tomoaki Yoshinaga.
 
-This repository contains the official implementation of the paper "QPIC: Query-Based Pairwise Human-Object Interaction Detection with Image-Wide Contextual Information", which is accepted to CVPR2021.
+This repository contains the official implementation of the paper "[QPIC: Query-Based Pairwise Human-Object Interaction Detection with Image-Wide Contextual Information](https://arxiv.org/abs/2103.05399)", which is accepted to CVPR2021.
 
-![overview](.github/overview.png)
+<div align="center">
+  <img src=".github/overview.png" width="900px" />
+</div>
 
 QPIC is implemented by extending the recently proposed object detector, DETR. QPIC leverages the query-based detection and attention mechanism in the transformer, and as a result, achieves high HOI detection performance with simple detection heads.
+
+<div align="center">
+  <img src=".github/attention.png" width="900px" />
+  <p>Example attention maps.</p>
+</div>
 
 ## Preparation
 
