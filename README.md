@@ -74,7 +74,7 @@ Note that only Python2 can be used for this conversion because `vsrl_utils.py` i
 V-COCO annotations with the HOIA format, `corre_vcoco.npy`, `test_vcoco.json`, and `trainval_vcoco.json` will be generated to `annotations` directory.
 
 ### Pre-trained parameters
-Our QPIC have to be pre-trained with the COCO object detection dataset. For the HICO-DET training, this pre-training can be omitted by using the parameters of DETR. The parameters can be downloaded from here for [ResNet50](https://dl.fbaipublicfiles.com/detr/detr-r50-e632da11.pth), and for [ResNet101](https://dl.fbaipublicfiles.com/detr/detr-r101-2c7b67e5.pth). For the V-COCO training, this pre-training has to be carried out because some images of the V-COCO evaluation set are contained in the training set of DETR. We excluded the images and pre-trained QPIC for the V-COCO evaluation. 
+Our QPIC have to be pre-trained with the COCO object detection dataset. For the HICO-DET training, this pre-training can be omitted by using the parameters of DETR. The parameters can be downloaded from here for [ResNet50](https://dl.fbaipublicfiles.com/detr/detr-r50-e632da11.pth), and for [ResNet101](https://dl.fbaipublicfiles.com/detr/detr-r101-2c7b67e5.pth). For the V-COCO training, this pre-training has to be carried out because some images of the V-COCO evaluation set are contained in the training set of DETR. We excluded the images and pre-trained QPIC for the V-COCO evaluation.
 
 After downloading or pre-training, move the pre-trained parameters to the `params` directory and convert the parameters with the following command (e.g. downloaded ResNet50 parameters).
 ```
@@ -146,6 +146,14 @@ The evaluation is conducted at the end of each epoch during the training. The re
 "test_mAP": 0.29061250833779456, "test_mAP rare": 0.21910348492395765, "test_mAP non-rare": 0.31197234650036926
 ```
 `test_mAP`, `test_mAP rare`, and `test_mAP non-rare` are the results of the default full, rare, and non-rare setting, respectively.
+
+For the official evaluation of V-COCO, a pickle file of detection results have to be generated. You can generate the file as follows.
+```
+python generate_vcoco_official.py \
+        --param_path logs/checkpoint.pth
+        --save_path vcoco.pickle
+        --hoi_path data/v-coco
+```
 
 ## Results
 HICO-DET.
