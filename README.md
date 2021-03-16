@@ -83,6 +83,9 @@ python convert_parameters.py \
         --save_path params/detr-r50-pre.pth
 ```
 
+### Trained parameters
+The trained parameters are available [here](https://github.com/hitachi-rd-cv/qpic/releases/tag/v1.0).
+
 ## Training
 After the preparation, you can start the training with the following command.
 
@@ -146,6 +149,19 @@ The evaluation is conducted at the end of each epoch during the training. The re
 "test_mAP": 0.29061250833779456, "test_mAP rare": 0.21910348492395765, "test_mAP non-rare": 0.31197234650036926
 ```
 `test_mAP`, `test_mAP rare`, and `test_mAP non-rare` are the results of the default full, rare, and non-rare setting, respectively.
+
+You can also conduct the evaluation with trained parameters as follows.
+```
+python main.py \
+        --pretrained qpic_resnet50_hico.pth \
+        --hoi \
+        --dataset_file hico \
+        --hoi_path data/hico_20160224_det \
+        --num_obj_classes 80 \
+        --num_verb_classes 117 \
+        --backbone resnet50 \
+        --eval
+```
 
 For the official evaluation of V-COCO, a pickle file of detection results have to be generated. You can generate the file as follows.
 ```
