@@ -114,7 +114,7 @@ python main.py \
         --hoi \
         --dataset_file vcoco \
         --hoi_path data/v-coco \
-        --num_obj_classes 80 \
+        --num_obj_classes 81 \
         --num_verb_classes 29 \
         --backbone resnet50 \
         --set_cost_bbox 2.5 \
@@ -122,6 +122,7 @@ python main.py \
         --bbox_loss_coef 2.5 \
         --giou_loss_coef 1
 ```
+Note that the number of object classes is 81 because one class is added for missing object.
 
 If you have multiple GPUs on your machine, you can utilize them to speed up the training. The number of GPUs is specified with the `--nproc_per_node` option. The following command starts the training with 8 GPUs for the HICO-DET training.
 ```
