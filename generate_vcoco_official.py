@@ -25,7 +25,7 @@ from util.misc import (NestedTensor, nested_tensor_from_tensor_list,
 
 class DETRHOI(nn.Module):
 
-    def __init__(self, backbone, transformer, num_obj_classes, num_verb_classes, num_queries, aux_loss=False):
+    def __init__(self, backbone, transformer, num_obj_classes, num_verb_classes, num_queries):
         super().__init__()
         self.num_queries = num_queries
         self.transformer = transformer
@@ -37,7 +37,6 @@ class DETRHOI(nn.Module):
         self.obj_bbox_embed = MLP(hidden_dim, hidden_dim, 4, 3)
         self.input_proj = nn.Conv2d(backbone.num_channels, hidden_dim, kernel_size=1)
         self.backbone = backbone
-        self.aux_loss = aux_loss
 
     def forward(self, samples: NestedTensor):
         if not isinstance(samples, NestedTensor):
@@ -163,8 +162,6 @@ def get_args_parser():
                         help="Number of attention heads inside the transformer's attentions")
     parser.add_argument('--num_queries', default=100, type=int,
                         help="Number of query slots")
-    parser.add_argument('--num_verb_queries', default=100, type=int,
-                        help="Number of query slots")
     parser.add_argument('--pre_norm', action='store_true')
 
     # * HOI
@@ -216,7 +213,7 @@ def main(args):
     backbone = build_backbone(args)
     transformer = build_transformer(args)
     model = DETRHOI(backbone, transformer, len(valid_obj_ids) + 1, len(verb_classes),
-                    args.num_queries, args.num_verb_queries)
+                    args.num_queries)
     post_processor = PostProcessHOI(args.num_queries, args.subject_category_id, dataset_val.correct_mat)
     model.to(device)
     post_processor.to(device)
