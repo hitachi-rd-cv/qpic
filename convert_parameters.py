@@ -5,6 +5,7 @@
 import argparse
 
 import torch
+from torch import nn
 
 
 def get_args():
@@ -15,6 +16,9 @@ def get_args():
     )
     parser.add_argument(
         '--save_path', type=str, required=True,
+    )
+    parser.add_argument(
+        '--dataset', type=str, default='hico',
     )
 
     args = parser.parse_args()
@@ -53,6 +57,14 @@ def main(args):
 
     ps['model']['obj_class_embed.weight'] = ps['model']['class_embed.weight'].clone()[obj_ids]
     ps['model']['obj_class_embed.bias'] = ps['model']['class_embed.bias'].clone()[obj_ids]
+
+    if args.dataset == 'vcoco':
+        l = nn.Linear(ps['model']['obj_class_embed.weight'].shape[1], 1)
+        l.to(ps['model']['obj_class_embed.weight'].device)
+        ps['model']['obj_class_embed.weight'] = torch.cat((
+            ps['model']['obj_class_embed.weight'][:-1], l.weight, ps['model']['obj_class_embed.weight'][[-1]]))
+        ps['model']['obj_class_embed.bias'] = torch.cat(
+            (ps['model']['obj_class_embed.bias'][:-1], l.bias, ps['model']['obj_class_embed.bias'][[-1]]))
 
     torch.save(ps, args.save_path)
 

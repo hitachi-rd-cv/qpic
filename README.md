@@ -74,13 +74,21 @@ Note that only Python2 can be used for this conversion because `vsrl_utils.py` i
 V-COCO annotations with the HOIA format, `corre_vcoco.npy`, `test_vcoco.json`, and `trainval_vcoco.json` will be generated to `annotations` directory.
 
 ### Pre-trained parameters
-Our QPIC have to be pre-trained with the COCO object detection dataset. For the HICO-DET training, this pre-training can be omitted by using the parameters of DETR. The parameters can be downloaded from here for [ResNet50](https://dl.fbaipublicfiles.com/detr/detr-r50-e632da11.pth), and for [ResNet101](https://dl.fbaipublicfiles.com/detr/detr-r101-2c7b67e5.pth). For the V-COCO training, this pre-training has to be carried out because some images of the V-COCO evaluation set are contained in the training set of DETR. We excluded the images and pre-trained QPIC for the V-COCO evaluation.
+Our QPIC have to be pre-trained with the COCO object detection dataset. For the HICO-DET training, this pre-training can be omitted by using the parameters of DETR. The parameters can be downloaded from [here](https://dl.fbaipublicfiles.com/detr/detr-r50-e632da11.pth) for the ResNet50 backbone, and [here](https://dl.fbaipublicfiles.com/detr/detr-r101-2c7b67e5.pth) for the ResNet101 backbone. For the V-COCO training, this pre-training has to be carried out because some images of the V-COCO evaluation set are contained in the training set of DETR. You have to pre-train QPIC without those overlapping images by yourself for the V-COCO evaluation.
 
-After downloading or pre-training, move the pre-trained parameters to the `params` directory and convert the parameters with the following command (e.g. downloaded ResNet50 parameters).
+For HICO-DET, move the downloaded parameters to the `params` directory and convert the parameters with the following command.
 ```
 python convert_parameters.py \
         --load_path params/detr-r50-e632da11.pth \
-        --save_path params/detr-r50-pre.pth
+        --save_path params/detr-r50-pre-hico.pth
+```
+
+For V-COCO, convert the pre-trained parameters with the following command.
+```
+python convert_parameters.py \
+        --load_path logs/checkpoint.pth \
+        --save_path params/detr-r50-pre-vcoco.pth \
+        --dataset vcoco
 ```
 
 ### Trained parameters
@@ -92,7 +100,7 @@ After the preparation, you can start the training with the following command.
 For the HICO-DET training.
 ```
 python main.py \
-        --pretrained params/detr-r50-pre.pth \
+        --pretrained params/detr-r50-pre-hico.pth \
         --output_dir logs \
         --hoi \
         --dataset_file hico \
@@ -109,7 +117,7 @@ python main.py \
 For the V-COCO training.
 ```
 python main.py \
-        --pretrained params/detr-r50-pre.pth \
+        --pretrained params/detr-r50-pre-vcoco.pth \
         --output_dir logs \
         --hoi \
         --dataset_file vcoco \
@@ -130,7 +138,7 @@ python -m torch.distributed.launch \
         --nproc_per_node=8 \
         --use_env \
         main.py \
-        --pretrained params/detr-r50-pre.pth \
+        --pretrained params/detr-r50-pre-hico.pth \
         --output_dir logs \
         --hoi \
         --dataset_file hico \
