@@ -175,8 +175,8 @@ python main.py \
 For the official evaluation of V-COCO, a pickle file of detection results have to be generated. You can generate the file as follows.
 ```
 python generate_vcoco_official.py \
-        --param_path logs/checkpoint.pth
-        --save_path vcoco.pickle
+        --param_path logs/checkpoint.pth \
+        --save_path vcoco.pickle \
         --hoi_path data/v-coco
 ```
 
